@@ -16,16 +16,8 @@ import { Configuration } from '../configuration';
 // Some imports not used depending on template conditions
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
-import { IAllAccessTokenResponse } from '../models';
-import { ICurrentAccessTokenResponse } from '../models';
-import { ILogin } from '../models';
-import { ILoginResponse } from '../models';
-import { INewPassword } from '../models';
-import { INewPasswordResponse } from '../models';
-import { IPasswordResetLink } from '../models';
-import { IPasswordResetLinkResponse } from '../models';
-import { IRegister } from '../models';
-import { IRegisterResponse } from '../models';
+import { IAuthenticateUserDto } from '../models';
+import { IResponseTokenDto } from '../models';
 /**
  * AuthApi - axios parameter creator
  * @export
@@ -34,142 +26,16 @@ export const AuthApiAxiosParamCreator = function (configuration?: Configuration)
     return {
         /**
          * 
-         * @param {ILogin} body 
+         * @param {IAuthenticateUserDto} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        laravelAuthRoutesLogin: async (body: ILogin, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        authRouterCreateToken: async (body: IAuthenticateUserDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'body' is not null or undefined
             if (body === null || body === undefined) {
-                throw new RequiredError('body','Required parameter body was null or undefined when calling laravelAuthRoutesLogin.');
+                throw new RequiredError('body','Required parameter body was null or undefined when calling authRouterCreateToken.');
             }
-            const localVarPath = `/api/v1/auth/login`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions :AxiosRequestConfig = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.params) {
-                query.set(key, options.params[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
-
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {INewPassword} body 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        laravelAuthRoutesNewPassword: async (body: INewPassword, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'body' is not null or undefined
-            if (body === null || body === undefined) {
-                throw new RequiredError('body','Required parameter body was null or undefined when calling laravelAuthRoutesNewPassword.');
-            }
-            const localVarPath = `/api/v1/auth/new-password`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions :AxiosRequestConfig = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.params) {
-                query.set(key, options.params[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
-
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {IPasswordResetLink} body 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        laravelAuthRoutesPasswordResetLink: async (body: IPasswordResetLink, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'body' is not null or undefined
-            if (body === null || body === undefined) {
-                throw new RequiredError('body','Required parameter body was null or undefined when calling laravelAuthRoutesPasswordResetLink.');
-            }
-            const localVarPath = `/api/v1/auth/password-reset-Link`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions :AxiosRequestConfig = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.params) {
-                query.set(key, options.params[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
-
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {IRegister} body 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        laravelAuthRoutesRegister: async (body: IRegister, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'body' is not null or undefined
-            if (body === null || body === undefined) {
-                throw new RequiredError('body','Required parameter body was null or undefined when calling laravelAuthRoutesRegister.');
-            }
-            const localVarPath = `/api/v1/auth/register`;
+            const localVarPath = `/api/v1/auth`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
@@ -205,7 +71,7 @@ export const AuthApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        laravelAuthRoutesRevokeAllAccessToken: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        authRouterRevokeAllAccessToken: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v1/auth/revoke/all-access-token`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -240,7 +106,7 @@ export const AuthApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        laravelAuthRoutesRevokeCurrentAccessToken: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        authRouterRevokeCurrentAccessToken: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v1/auth/revoke/current-access-token`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -281,51 +147,12 @@ export const AuthApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @param {ILogin} body 
+         * @param {IAuthenticateUserDto} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async laravelAuthRoutesLogin(body: ILogin, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<ILoginResponse>>> {
-            const localVarAxiosArgs = await AuthApiAxiosParamCreator(configuration).laravelAuthRoutesLogin(body, options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
-        },
-        /**
-         * 
-         * @param {INewPassword} body 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async laravelAuthRoutesNewPassword(body: INewPassword, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<INewPasswordResponse>>> {
-            const localVarAxiosArgs = await AuthApiAxiosParamCreator(configuration).laravelAuthRoutesNewPassword(body, options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
-        },
-        /**
-         * 
-         * @param {IPasswordResetLink} body 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async laravelAuthRoutesPasswordResetLink(body: IPasswordResetLink, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<IPasswordResetLinkResponse>>> {
-            const localVarAxiosArgs = await AuthApiAxiosParamCreator(configuration).laravelAuthRoutesPasswordResetLink(body, options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
-        },
-        /**
-         * 
-         * @param {IRegister} body 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async laravelAuthRoutesRegister(body: IRegister, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<IRegisterResponse>>> {
-            const localVarAxiosArgs = await AuthApiAxiosParamCreator(configuration).laravelAuthRoutesRegister(body, options);
+        async authRouterCreateToken(body: IAuthenticateUserDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<IResponseTokenDto>>> {
+            const localVarAxiosArgs = await AuthApiAxiosParamCreator(configuration).authRouterCreateToken(body, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -336,8 +163,8 @@ export const AuthApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async laravelAuthRoutesRevokeAllAccessToken(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<IAllAccessTokenResponse>>> {
-            const localVarAxiosArgs = await AuthApiAxiosParamCreator(configuration).laravelAuthRoutesRevokeAllAccessToken(options);
+        async authRouterRevokeAllAccessToken(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<void>>> {
+            const localVarAxiosArgs = await AuthApiAxiosParamCreator(configuration).authRouterRevokeAllAccessToken(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -348,8 +175,8 @@ export const AuthApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async laravelAuthRoutesRevokeCurrentAccessToken(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<ICurrentAccessTokenResponse>>> {
-            const localVarAxiosArgs = await AuthApiAxiosParamCreator(configuration).laravelAuthRoutesRevokeCurrentAccessToken(options);
+        async authRouterRevokeCurrentAccessToken(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<void>>> {
+            const localVarAxiosArgs = await AuthApiAxiosParamCreator(configuration).authRouterRevokeCurrentAccessToken(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -366,55 +193,28 @@ export const AuthApiFactory = function (configuration?: Configuration, basePath?
     return {
         /**
          * 
-         * @param {ILogin} body 
+         * @param {IAuthenticateUserDto} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async laravelAuthRoutesLogin(body: ILogin, options?: AxiosRequestConfig): Promise<AxiosResponse<ILoginResponse>> {
-            return AuthApiFp(configuration).laravelAuthRoutesLogin(body, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {INewPassword} body 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async laravelAuthRoutesNewPassword(body: INewPassword, options?: AxiosRequestConfig): Promise<AxiosResponse<INewPasswordResponse>> {
-            return AuthApiFp(configuration).laravelAuthRoutesNewPassword(body, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {IPasswordResetLink} body 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async laravelAuthRoutesPasswordResetLink(body: IPasswordResetLink, options?: AxiosRequestConfig): Promise<AxiosResponse<IPasswordResetLinkResponse>> {
-            return AuthApiFp(configuration).laravelAuthRoutesPasswordResetLink(body, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {IRegister} body 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async laravelAuthRoutesRegister(body: IRegister, options?: AxiosRequestConfig): Promise<AxiosResponse<IRegisterResponse>> {
-            return AuthApiFp(configuration).laravelAuthRoutesRegister(body, options).then((request) => request(axios, basePath));
+        async authRouterCreateToken(body: IAuthenticateUserDto, options?: AxiosRequestConfig): Promise<AxiosResponse<IResponseTokenDto>> {
+            return AuthApiFp(configuration).authRouterCreateToken(body, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async laravelAuthRoutesRevokeAllAccessToken(options?: AxiosRequestConfig): Promise<AxiosResponse<IAllAccessTokenResponse>> {
-            return AuthApiFp(configuration).laravelAuthRoutesRevokeAllAccessToken(options).then((request) => request(axios, basePath));
+        async authRouterRevokeAllAccessToken(options?: AxiosRequestConfig): Promise<AxiosResponse<void>> {
+            return AuthApiFp(configuration).authRouterRevokeAllAccessToken(options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async laravelAuthRoutesRevokeCurrentAccessToken(options?: AxiosRequestConfig): Promise<AxiosResponse<ICurrentAccessTokenResponse>> {
-            return AuthApiFp(configuration).laravelAuthRoutesRevokeCurrentAccessToken(options).then((request) => request(axios, basePath));
+        async authRouterRevokeCurrentAccessToken(options?: AxiosRequestConfig): Promise<AxiosResponse<void>> {
+            return AuthApiFp(configuration).authRouterRevokeCurrentAccessToken(options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -428,43 +228,13 @@ export const AuthApiFactory = function (configuration?: Configuration, basePath?
 export class AuthApi extends BaseAPI {
     /**
      * 
-     * @param {ILogin} body 
+     * @param {IAuthenticateUserDto} body 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AuthApi
      */
-    public async laravelAuthRoutesLogin(body: ILogin, options?: AxiosRequestConfig) : Promise<AxiosResponse<ILoginResponse>> {
-        return AuthApiFp(this.configuration).laravelAuthRoutesLogin(body, options).then((request) => request(this.axios, this.basePath));
-    }
-    /**
-     * 
-     * @param {INewPassword} body 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AuthApi
-     */
-    public async laravelAuthRoutesNewPassword(body: INewPassword, options?: AxiosRequestConfig) : Promise<AxiosResponse<INewPasswordResponse>> {
-        return AuthApiFp(this.configuration).laravelAuthRoutesNewPassword(body, options).then((request) => request(this.axios, this.basePath));
-    }
-    /**
-     * 
-     * @param {IPasswordResetLink} body 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AuthApi
-     */
-    public async laravelAuthRoutesPasswordResetLink(body: IPasswordResetLink, options?: AxiosRequestConfig) : Promise<AxiosResponse<IPasswordResetLinkResponse>> {
-        return AuthApiFp(this.configuration).laravelAuthRoutesPasswordResetLink(body, options).then((request) => request(this.axios, this.basePath));
-    }
-    /**
-     * 
-     * @param {IRegister} body 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AuthApi
-     */
-    public async laravelAuthRoutesRegister(body: IRegister, options?: AxiosRequestConfig) : Promise<AxiosResponse<IRegisterResponse>> {
-        return AuthApiFp(this.configuration).laravelAuthRoutesRegister(body, options).then((request) => request(this.axios, this.basePath));
+    public async authRouterCreateToken(body: IAuthenticateUserDto, options?: AxiosRequestConfig) : Promise<AxiosResponse<IResponseTokenDto>> {
+        return AuthApiFp(this.configuration).authRouterCreateToken(body, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
@@ -472,8 +242,8 @@ export class AuthApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AuthApi
      */
-    public async laravelAuthRoutesRevokeAllAccessToken(options?: AxiosRequestConfig) : Promise<AxiosResponse<IAllAccessTokenResponse>> {
-        return AuthApiFp(this.configuration).laravelAuthRoutesRevokeAllAccessToken(options).then((request) => request(this.axios, this.basePath));
+    public async authRouterRevokeAllAccessToken(options?: AxiosRequestConfig) : Promise<AxiosResponse<void>> {
+        return AuthApiFp(this.configuration).authRouterRevokeAllAccessToken(options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
@@ -481,7 +251,7 @@ export class AuthApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AuthApi
      */
-    public async laravelAuthRoutesRevokeCurrentAccessToken(options?: AxiosRequestConfig) : Promise<AxiosResponse<ICurrentAccessTokenResponse>> {
-        return AuthApiFp(this.configuration).laravelAuthRoutesRevokeCurrentAccessToken(options).then((request) => request(this.axios, this.basePath));
+    public async authRouterRevokeCurrentAccessToken(options?: AxiosRequestConfig) : Promise<AxiosResponse<void>> {
+        return AuthApiFp(this.configuration).authRouterRevokeCurrentAccessToken(options).then((request) => request(this.axios, this.basePath));
     }
 }

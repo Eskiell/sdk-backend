@@ -16,8 +16,11 @@ import { Configuration } from '../configuration';
 // Some imports not used depending on template conditions
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
-import { IProfileResponse } from '../models';
-import { IUpdateUser } from '../models';
+import { IBadRequestResponseDto } from '../models';
+import { ICreateUserDto } from '../models';
+import { ICreateUserResponseDto } from '../models';
+import { IProfileUserResponseDto } from '../models';
+import { IUpdateUserDto } from '../models';
 /**
  * UsersApi - axios parameter creator
  * @export
@@ -26,17 +29,53 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
     return {
         /**
          * 
-         * @param {number} id 
+         * @param {ICreateUserDto} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        laravelUserRoutesDeleteProfile: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling laravelUserRoutesDeleteProfile.');
+        usersRouterCreateNewUser: async (body: ICreateUserDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'body' is not null or undefined
+            if (body === null || body === undefined) {
+                throw new RequiredError('body','Required parameter body was null or undefined when calling usersRouterCreateNewUser.');
             }
-            const localVarPath = `/api/v1/users/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            const localVarPath = `/api/v1/users`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions :AxiosRequestConfig = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.params) {
+                query.set(key, options.params[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        usersRouterDeleteUser: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v1/users`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
@@ -67,24 +106,18 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @param {number} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        laravelUserRoutesFindProfile: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling laravelUserRoutesFindProfile.');
-            }
-            const localVarPath = `/api/v1/users/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+        usersRouterGetUser: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v1/users`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
             if (configuration) {
                 baseOptions = configuration.baseOptions;
             }
-            const localVarRequestOptions :AxiosRequestConfig = { method: 'POST', ...baseOptions, ...options};
+            const localVarRequestOptions :AxiosRequestConfig = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -108,22 +141,16 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @param {IUpdateUser} body 
-         * @param {number} id 
+         * @param {IUpdateUserDto} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        laravelUserRoutesUpdateProfile: async (body: IUpdateUser, id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        usersRouterUpdateUser: async (body: IUpdateUserDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'body' is not null or undefined
             if (body === null || body === undefined) {
-                throw new RequiredError('body','Required parameter body was null or undefined when calling laravelUserRoutesUpdateProfile.');
+                throw new RequiredError('body','Required parameter body was null or undefined when calling usersRouterUpdateUser.');
             }
-            // verify required parameter 'id' is not null or undefined
-            if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling laravelUserRoutesUpdateProfile.');
-            }
-            const localVarPath = `/api/v1/users/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            const localVarPath = `/api/v1/users`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
@@ -167,12 +194,12 @@ export const UsersApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @param {number} id 
+         * @param {ICreateUserDto} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async laravelUserRoutesDeleteProfile(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<void>>> {
-            const localVarAxiosArgs = await UsersApiAxiosParamCreator(configuration).laravelUserRoutesDeleteProfile(id, options);
+        async usersRouterCreateNewUser(body: ICreateUserDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<ICreateUserResponseDto>>> {
+            const localVarAxiosArgs = await UsersApiAxiosParamCreator(configuration).usersRouterCreateNewUser(body, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -180,12 +207,11 @@ export const UsersApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {number} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async laravelUserRoutesFindProfile(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<IProfileResponse>>> {
-            const localVarAxiosArgs = await UsersApiAxiosParamCreator(configuration).laravelUserRoutesFindProfile(id, options);
+        async usersRouterDeleteUser(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<void>>> {
+            const localVarAxiosArgs = await UsersApiAxiosParamCreator(configuration).usersRouterDeleteUser(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -193,13 +219,24 @@ export const UsersApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {IUpdateUser} body 
-         * @param {number} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async laravelUserRoutesUpdateProfile(body: IUpdateUser, id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<void>>> {
-            const localVarAxiosArgs = await UsersApiAxiosParamCreator(configuration).laravelUserRoutesUpdateProfile(body, id, options);
+        async usersRouterGetUser(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<IProfileUserResponseDto>>> {
+            const localVarAxiosArgs = await UsersApiAxiosParamCreator(configuration).usersRouterGetUser(options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @param {IUpdateUserDto} body 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async usersRouterUpdateUser(body: IUpdateUserDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<void>>> {
+            const localVarAxiosArgs = await UsersApiAxiosParamCreator(configuration).usersRouterUpdateUser(body, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -216,31 +253,37 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
     return {
         /**
          * 
-         * @param {number} id 
+         * @param {ICreateUserDto} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async laravelUserRoutesDeleteProfile(id: number, options?: AxiosRequestConfig): Promise<AxiosResponse<void>> {
-            return UsersApiFp(configuration).laravelUserRoutesDeleteProfile(id, options).then((request) => request(axios, basePath));
+        async usersRouterCreateNewUser(body: ICreateUserDto, options?: AxiosRequestConfig): Promise<AxiosResponse<ICreateUserResponseDto>> {
+            return UsersApiFp(configuration).usersRouterCreateNewUser(body, options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @param {number} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async laravelUserRoutesFindProfile(id: number, options?: AxiosRequestConfig): Promise<AxiosResponse<IProfileResponse>> {
-            return UsersApiFp(configuration).laravelUserRoutesFindProfile(id, options).then((request) => request(axios, basePath));
+        async usersRouterDeleteUser(options?: AxiosRequestConfig): Promise<AxiosResponse<void>> {
+            return UsersApiFp(configuration).usersRouterDeleteUser(options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @param {IUpdateUser} body 
-         * @param {number} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async laravelUserRoutesUpdateProfile(body: IUpdateUser, id: number, options?: AxiosRequestConfig): Promise<AxiosResponse<void>> {
-            return UsersApiFp(configuration).laravelUserRoutesUpdateProfile(body, id, options).then((request) => request(axios, basePath));
+        async usersRouterGetUser(options?: AxiosRequestConfig): Promise<AxiosResponse<IProfileUserResponseDto>> {
+            return UsersApiFp(configuration).usersRouterGetUser(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {IUpdateUserDto} body 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async usersRouterUpdateUser(body: IUpdateUserDto, options?: AxiosRequestConfig): Promise<AxiosResponse<void>> {
+            return UsersApiFp(configuration).usersRouterUpdateUser(body, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -254,33 +297,40 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
 export class UsersApi extends BaseAPI {
     /**
      * 
-     * @param {number} id 
+     * @param {ICreateUserDto} body 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UsersApi
      */
-    public async laravelUserRoutesDeleteProfile(id: number, options?: AxiosRequestConfig) : Promise<AxiosResponse<void>> {
-        return UsersApiFp(this.configuration).laravelUserRoutesDeleteProfile(id, options).then((request) => request(this.axios, this.basePath));
+    public async usersRouterCreateNewUser(body: ICreateUserDto, options?: AxiosRequestConfig) : Promise<AxiosResponse<ICreateUserResponseDto>> {
+        return UsersApiFp(this.configuration).usersRouterCreateNewUser(body, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
-     * @param {number} id 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UsersApi
      */
-    public async laravelUserRoutesFindProfile(id: number, options?: AxiosRequestConfig) : Promise<AxiosResponse<IProfileResponse>> {
-        return UsersApiFp(this.configuration).laravelUserRoutesFindProfile(id, options).then((request) => request(this.axios, this.basePath));
+    public async usersRouterDeleteUser(options?: AxiosRequestConfig) : Promise<AxiosResponse<void>> {
+        return UsersApiFp(this.configuration).usersRouterDeleteUser(options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
-     * @param {IUpdateUser} body 
-     * @param {number} id 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UsersApi
      */
-    public async laravelUserRoutesUpdateProfile(body: IUpdateUser, id: number, options?: AxiosRequestConfig) : Promise<AxiosResponse<void>> {
-        return UsersApiFp(this.configuration).laravelUserRoutesUpdateProfile(body, id, options).then((request) => request(this.axios, this.basePath));
+    public async usersRouterGetUser(options?: AxiosRequestConfig) : Promise<AxiosResponse<IProfileUserResponseDto>> {
+        return UsersApiFp(this.configuration).usersRouterGetUser(options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * 
+     * @param {IUpdateUserDto} body 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UsersApi
+     */
+    public async usersRouterUpdateUser(body: IUpdateUserDto, options?: AxiosRequestConfig) : Promise<AxiosResponse<void>> {
+        return UsersApiFp(this.configuration).usersRouterUpdateUser(body, options).then((request) => request(this.axios, this.basePath));
     }
 }
